@@ -1,0 +1,1 @@
+# Analise_de_Indicadores_Financeiros_Automatizada
