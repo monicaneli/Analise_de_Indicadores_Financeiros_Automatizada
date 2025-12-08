@@ -375,6 +375,22 @@ def classificar_ebitda(historico_empresa_df, nome_coluna="EBITDA"):
 
     return stats
 
+def calcular_stats_setor(df, setor, metrica="Liquidez_Corrente"):
+    x = df[df["Categoria"] == setor][metrica].dropna()
+    
+    return {
+        "Min": float(x.min()),
+        "Max": float(x.max()),
+        "Mean": float(x.mean()),
+        "Median": float(x.median()),
+        "Std": float(x.std()),
+        "Q1": float(x.quantile(0.25)),
+        "Q3": float(x.quantile(0.75)),
+        "IQR": float(x.quantile(0.75) - x.quantile(0.25)),
+        "Skewness": float(skew(x))
+    }
+
+
 def gerar_diagnostico_completo(empresa="AAPL"):
 
     df = obter_base_de_dados()
@@ -384,39 +400,45 @@ def gerar_diagnostico_completo(empresa="AAPL"):
         return {"erro": f"Empresa {empresa} não encontrada na base."}
 
     setor = df_empresa["Categoria"].iloc[0]
-    
-    # Classifica cada indicador
-    res_liquidez = classificar_liquidez_corrente(df_empresa)
-    res_fco = classificar_fco(df_empresa) 
-    res_margem = classificar_margem_liquida(df_empresa) 
-    res_ebitda = classificar_ebitda(df_empresa)
-    
-    # Junta tudo num DataFrame final para exportar pro n8n/JSON
-    diagnostico = pd.DataFrame([res_liquidez, res_fco, res_margem, res_ebitda])
 
-    ordem_col = [
-        'Indicador', 
-        'Classificacao',
-        'Justificativa',
-        'Min', 
-        'Max', 
-        'Mean', 
-        'Median', 
-        'Std', 
-        'Q1', 
-        'Q3', 
-        'IQR', 
-        'Skewness', 
-        "YoY Acumulado % (3 últimos anos)", 
-        "CAGR % (3 últimos anos)", 
-        "Slope (Regressão Linear, 3 últimos anos)", 
-        "Interpretação Tendência (3 últimos anos)",
-        "Tendência"
+    # Quantidade de empresas no setor
+    empresas_no_setor = df[df["Categoria"] == setor]["Empresa"].nunique()
+    incluir_setor = empresas_no_setor > 1
+
+    # Empresa
+    res_liquidez = classificar_liquidez_corrente(df_empresa)
+    res_fco = classificar_fco(df_empresa)
+    res_margem = classificar_margem_liquida(df_empresa)
+    res_ebitda = classificar_ebitda(df_empresa)
+
+    # Setor (somente se houver mais de uma empresa)
+    res_liquidez_setor = calcular_stats_setor(df, setor, "Liquidez_Corrente") if incluir_setor else None
+    res_fco_setor = calcular_stats_setor(df, setor, "Fluxo_Caixa_Operacional") if incluir_setor else None
+    res_margem_setor = calcular_stats_setor(df, setor, "Margem_Liquida") if incluir_setor else None
+    res_ebitda_setor = calcular_stats_setor(df, setor, "EBITDA") if incluir_setor else None
+
+    metricas = [
+        ("Liquidez Corrente", res_liquidez, res_liquidez_setor),
+        ("Fluxo_Caixa_Operacional", res_fco, res_fco_setor),
+        ("Margem Líquida", res_margem, res_margem_setor),
+        ("EBITDA", res_ebitda, res_ebitda_setor),
     ]
-    
-    resultado = {
+
+    # Monta o JSON final
+    resultado_metricas = []
+    for nome_indicador, emp, setor_stats in metricas:
+        bloco = {
+            "Indicador": nome_indicador,
+            "Empresa": emp
+        }
+        if incluir_setor:
+            bloco["Setor"] = setor_stats
+        resultado_metricas.append(bloco)
+
+    return {
         "empresa": empresa,
         "setor": setor,
-        "metricas": diagnostico[ordem_col].to_dict(orient="records")
+        "metricas": resultado_metricas,
+        "incluiu_setor": incluir_setor,
+        "empresas_no_setor": empresas_no_setor
     }
-    return resultado
