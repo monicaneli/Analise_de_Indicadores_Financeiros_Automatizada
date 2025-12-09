@@ -81,6 +81,14 @@ O sistema está disponível para testes públicos. O fluxo simula a chegada de u
 3.  Aguarde o processamento (o sistema consultará o histórico, aplicará as regras e gerará o texto via IA).
 4.  Visualize o Relatório Executivo final gerado.
 
+
+<div align="center">
+	<img src="https://github.com/monicaneli/Analise_de_Indicadores_Financeiros_Automatizada/blob/87fa79d243f52eb5e8dc5bac4439bb33d4cb5a06/images/formulario_n8n.JPG" alt="Demo" width="18%" style="display:inline-block;"/>
+  	<img src="https://github.com/monicaneli/Analise_de_Indicadores_Financeiros_Automatizada/blob/87fa79d243f52eb5e8dc5bac4439bb33d4cb5a06/images/N8N%20Workflow.JPG" alt="Workflow no N8N" width="80%" style="display:inline-block; margin-right:10px;"/>
+</div>
+
+<p align="center"><i>Workflow no N8N encapsulando os processos da demo</i></p>
+
 ---
 
 ## 📊 Indicadores Analisados
@@ -95,6 +103,8 @@ O sistema avalia quatro pilares fundamentais para a segurança da Duplicata Escr
 | **Comparativo** | Mediana Setorial, Quartis | A empresa performa acima ou abaixo de seus pares? |
 
 ---
+<img src="https://github.com/monicaneli/Analise_de_Indicadores_Financeiros_Automatizada/blob/87fa79d243f52eb5e8dc5bac4439bb33d4cb5a06/images/Empesa_AAPL_Setor_Tecnologia_da_Informacao.png" alt="Análise Empresa AAPL" width="100%" style="display:block;"/>
+
 
 ## ⚠️ Disclaimer
 
