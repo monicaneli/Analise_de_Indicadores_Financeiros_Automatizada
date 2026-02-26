@@ -21,6 +21,9 @@ Nesse contexto, este projeto propõe um **MVP (Produto Mínimo Viável)** de um 
 O objetivo é traduzir indicadores financeiros complexos em *insights* acionáveis, suportando decisões relacionadas à concessão de crédito. O sistema integra histórico temporal, benchmarking setorial e métricas-chave de desempenho operacional.
 
 ---
+## 🎯 Vídeo de Apresentação do Projeto
+[![Texto Alternativo](https://img.youtube.com/vi/7j21BwvGDh8/0.jpg)](https://www.youtube.com/watch?v=7j21BwvGDh8)
+---
 
 ## 🎯 Objetivo do Projeto
 
@@ -72,14 +75,14 @@ Criação do fluxo ponta a ponta:
 
 ---
 
-## 🧪 Como Testar (Live Demo)
+## 🧪 Como Funciona?
 
 O sistema está disponível para testes públicos. O fluxo simula a chegada de uma nova solicitação de análise de crédito.
 
-1.  Acesse o formulário de teste: **[LINK PARA O FORMULÁRIO AQUI](https://monicaneli.app.n8n.cloud/form/ed8f7bd5-bae0-4ed7-9e0c-66611ac4f51e)**
-2.  Selecione uma empresa da lista.
-3.  Aguarde o processamento (o sistema consultará o histórico, aplicará as regras e gerará o texto via IA).
-4.  Visualize o Relatório Executivo final gerado.
+1.  Usuário acessa o formulário.
+2.  Usuário seleciona uma empresa da lista e clica em "Analisar Empresa".
+3.  O disparo do formulário irá ativar o workflow to N8N: consultará o histórico da empresa, aplicará as regras, gerando as estatísticas e classificação, por fim envia o contéudo pra IA gerar o relatório.
+4.  O Relatório Executivo final é gerado e salvo neste repositório em formato HTML.
 
 
 <div align="center">
